@@ -40,11 +40,11 @@ Console::Console()
 
 	COORD font_size = GetConsoleFontSize(GetStdHandle(STD_OUTPUT_HANDLE), font_info.nFont);
 
-	int actual_screen_x = 2000; // SCREEN_WIDTH* font_size.X;
-	int actual_screen_y = 1000; // SCREEN_HEIGHT* font_size.Y;
+	int actual_screen_x = SCREEN_WIDTH * font_size.X + 5 * font_size.X;
+	int actual_screen_y = SCREEN_HEIGHT * font_size.Y + 8 * font_size.Y;
 
-	int pos_x = 500; // GetSystemMetrics(SM_CXSCREEN) / 2 - (actual_screen_x / 2);
-	int pos_y = 200; // GetSystemMetrics(SM_CYSCREEN) / 2 - (actual_screen_y / 2);
+	int pos_x = GetSystemMetrics(SM_CXSCREEN) / 2 - (actual_screen_x / 2);
+	int pos_y = GetSystemMetrics(SM_CYSCREEN) / 2 - (actual_screen_y / 2);
 
 	 // Set the size and position of the window
 	if (!MoveWindow(ConsoleWindow, pos_x, pos_y, actual_screen_x, actual_screen_y, TRUE))
@@ -82,9 +82,6 @@ void Console::ClearBuffer()
 	// Set all the values of the buffer to empty space
 	for (int i = 0; i < BUFFER_SIZE; i++)
 		Screen[i] = L' ';
-
-	// Reset all the buffe to white
-	SetTextColor(BUFFER_SIZE, 0, 0, WinConsole, WHITE);
 }
 
 void Console::Write(int x, int y, const std::wstring& text, WORD color)
