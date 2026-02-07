@@ -1,17 +1,22 @@
 #pragma once
 
 #include "IState.h"
+#include "../Selector.h"
 
+class Console;
 class Keyboard;
 class StateMachine;
 
 class GameState : public IState
 {
 private:
+	Console& console;
 	Keyboard& keyboard;
 	StateMachine& stateMachine;
+
+	Selector<> selector;
 public:
-	GameState(Keyboard& keyboard, StateMachine& stateMachine);
+	GameState(Console& console, Keyboard& keyboard, StateMachine& stateMachine);
 	~GameState();
 
 	void OnEnter() override;

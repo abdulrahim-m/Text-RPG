@@ -1,11 +1,14 @@
 #include "GameState.h"
 #include "../Logger.h"
+#include "../Console.h"
 #include "../inputs/Keyboard.h"
 #include "StateMachine.h"
 
-GameState::GameState(Keyboard& keyboard, StateMachine& stateMachine)
-	: keyboard(keyboard)
+GameState::GameState(Console& console, Keyboard& keyboard, StateMachine& stateMachine)
+	: console(console)
+	, keyboard(keyboard)
 	, stateMachine(stateMachine)
+	, selector(console, keyboard, {L"Start", L"Settings", L"Exit"})
 {
 }
 
@@ -15,21 +18,23 @@ GameState::~GameState()
 
 void GameState::OnEnter()
 {
-	TRPG_LOG("ENTER GAME STATE!");
+	console.ClearBuffer();
 }
 
 void GameState::OnExit()
 {
-	TRPG_LOG("EXIT GAME STATE!");
+	console.ClearBuffer();
 }
 
 void GameState::Update()
 {
-	TRPG_LOG("UPDATE GAME STATE!");
+	
 }
 
 void GameState::Draw()
 {
+	selector.Draw();
+	console.Draw();
 }
 
 void GameState::ProcessInput()
@@ -38,6 +43,8 @@ void GameState::ProcessInput()
 	{
 		stateMachine.PopState();
 	}
+
+	selector.ProcessInputs();
 }
 
 bool GameState::Exit()
